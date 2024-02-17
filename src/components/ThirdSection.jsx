@@ -18,7 +18,7 @@ export default function ThirdSection(props) {
                     <button className="button--customize" onClick={() => props.triggerPreview()}>CUSTOMIZE</button>
                 </div>
             </section>
-            <footer>
+            <footer style={{height:'2500px'}}>
                 <button className="button--footer" onClick={() => handleGoTop()}>BACK TO TOP</button>
             </footer>
         </>

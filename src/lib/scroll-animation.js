@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 
-export const scrollAnimation = (position_obj1, target_obj1, position_obj2, target_obj2, isMobile, onUpdate) => {
+export const scrollAnimation = (position_obj1, target_obj1, position_obj2, target_obj2, position_obj3, target_obj3, isMobile, onUpdate) => {
 
 
     var lastScrollTop = 0;
@@ -85,6 +85,55 @@ export const scrollAnimation = (position_obj1, target_obj1, position_obj2, targe
             z: 0,
             scrollTrigger: {
                 trigger: '.second',
+                start: 'top bottom',
+                end: 'top top',
+                scrub: true,
+                immediateRender: false
+            },
+        })
+
+    tl.to(position_obj3, {
+        x: 0,
+        y: 0,
+        z: 0,
+        scrollTrigger: {
+            trigger: '.second',
+            start: 'top bottom',
+            end: 'bottom ',
+            scrub: true,
+            immediateRender: true
+        },
+    })
+        .to(target_obj3, {
+            x: 0,
+            y: 1.5,
+            z: 0,
+            scrollTrigger: {
+                trigger: '.second',
+                start: 'top bottom',
+                end: 'bottom',
+                scrub: true,
+                immediateRender: false
+            },
+        })
+    tl.to(position_obj3, {
+        x: 0,
+        y: 0,
+        z: 0,
+        scrollTrigger: {
+            trigger: '.third',
+            start: 'top bottom',
+            end: 'top top ',
+            scrub: true,
+            immediateRender: true
+        },
+    })
+        .to(target_obj3, {
+            x: 0,
+            y: 1.5,
+            z: 0,
+            scrollTrigger: {
+                trigger: '.third',
                 start: 'top bottom',
                 end: 'top top',
                 scrub: true,

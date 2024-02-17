@@ -35,11 +35,15 @@ import {
     PlaneGeometry,
     Group,
     ShaderMaterial,
-    MeshStandardMaterial
+    MeshStandardMaterial,
+    Color,
+    rotateDuplicatedMesh
 } from "webgi";
 import { scrollAnimation } from '../lib/scroll-animation';
 import img from '../assets/images/preview.jpg'
 import icon from '../assets/images/play-button.png'
+// import vs from '../glsl/border_vs.glsl'
+// import fs from '../glsl/border_fs.glsl'
 
 
 
@@ -56,9 +60,9 @@ const WebgiViewer = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
     }));
 
-    const memorizedScrollAnimation = useCallback((position_obj1, target_obj1, position_obj2, target_obj2, isMobile, onUpdate) => {
+    const memorizedScrollAnimation = useCallback((position_obj1, target_obj1, position_obj2, target_obj2, position_obj3, target_obj3, isMobile, onUpdate) => {
         if (position_obj1 && target_obj1 && onUpdate) {
-            scrollAnimation(position_obj1, target_obj1, position_obj2, target_obj2, isMobile, onUpdate)
+            scrollAnimation(position_obj1, target_obj1, position_obj2, target_obj2, position_obj3, target_obj3, isMobile, onUpdate)
         }
     }, [])
 
@@ -77,49 +81,74 @@ const WebgiViewer = forwardRef((props, ref) => {
         //add plugin support adding glb to viewer
         // const obj1 = await viewer.addPlugin(new AssetManagerPlugin)
 
-        // //Create 3D zone, which wrap new slides
-        // const SlideCamera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        // const wrapper_slide = new Object3D;
-        // const geometry = new CylinderGeometry(2, 2, 3, 8);
-        // const texttureLoader = new TextureLoader();
-        // const material = new MeshBasicMaterial({ color: 0x00ff00, roughness: 0.7, metalness: 0.5 }); // Adjust material properties as needed;
-        // const hexagon = new Mesh(geometry, material);
-        // hexagon.position.set(0, 0, 0)
-        // hexagon.rotation.set(0, 2.55, 0)
-        // const wireframeGeometry = new WireframeGeometry(geometry);
-        // const wireframeMaterial = new LineBasicMaterial({ color: 0x000000 });
-        // const wireframe = new LineSegments(wireframeGeometry, wireframeMaterial);
-        // wireframe.position.set(0, 0, 0)
-        // wireframe.rotation.set(0, 2.55, 0)
-        // wrapper_slide.add(hexagon)
-        // wrapper_slide.add(wireframe)
+        const Cylinder_R = 5;
+        const Cylinder_H = 15;
+        const Cylinder_Seg = 8;
+        const SegRadius = (360 / 8) * (Math.PI / 180);
 
+        //Create 3D zone, which wrap new slides
+        const SlideCamera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const wrapper_slide = new Object3D;
+        const geometry1 = new CylinderGeometry(Cylinder_R, Cylinder_R, Cylinder_H, Cylinder_Seg);
+        const material = new MeshBasicMaterial({ color: 0x00ff00, roughness: 0.7, metalness: 0.5, transparent: true, alphaTest: 0.5, opacity: 0 }); // Adjust material properties as needed;
+        const hexagon = new Mesh(geometry1, material);
+        hexagon.position.set(0, 0, 0)
+        hexagon.rotation.set(0, 1.55, 0)
+        hexagon.castShadow = false
+        const wireframeGeometry = new WireframeGeometry(geometry1);
+        const wireframeMaterial = new LineBasicMaterial({ color: 0x000000 });
+        const wireframe = new LineSegments(wireframeGeometry, wireframeMaterial);
+        wireframe.position.set(0, 0, 0)
+        wireframe.rotation.set(0, 1.55, 0)
+        wrapper_slide.add(hexagon)
+        wrapper_slide.add(wireframe)
 
         const textureLoader = new TextureLoader();
         const texture = textureLoader.load(img);
 
-        const paddingX = 0.1; // Adjust the padding on the X-axis
-        const paddingY = 0.1; // Adjust the padding on the Y-axis
 
-        
         //Create 3D zone, which wrap new object
+        const geometry2 = new PlaneGeometry(1, 1.5);
+        const planeMaterial = new MeshBasicMaterial({ map: texture, });
 
-        const wrapper_slide = new Object3D;
-        const geometry = new PlaneGeometry(2, 3);
-        const planeMaterial = new MeshBasicMaterial({ map: texture, side: DoubleSide });
-        const planeMesh = new Mesh(geometry, planeMaterial)
+        const planeMesh = new Mesh(geometry2, planeMaterial);
+        const planeMesh1 = new Mesh(geometry2, planeMaterial);
+        const planeMesh2 = new Mesh(geometry2, planeMaterial);
+        const planeMesh3 = new Mesh(geometry2, planeMaterial);
+
+
+
+        planeMesh.position.set(Cylinder_R * Math.cos(0), -2.5, Cylinder_R * Math.sin(0))
+        planeMesh.rotateY(45 * 2 * Math.PI / 180)
+        planeMesh.rotateX((-6) * Math.PI / 180)
+        planeMesh.castShadow = false
+
+        planeMesh1.position.set(Cylinder_R * Math.cos(SegRadius), -1, Cylinder_R * Math.sin(SegRadius))
+        planeMesh1.rotateY(45 * 1 * Math.PI / 180)
+        planeMesh1.rotateX((-6) * Math.PI / 180)
+
+        planeMesh2.position.set(Cylinder_R * Math.cos(SegRadius * 2), 0.5, Cylinder_R * Math.sin(SegRadius * 2))
+        planeMesh2.rotateY((0) * Math.PI / 180)
+        planeMesh2.rotateX((-6) * Math.PI / 180)
+
+        planeMesh3.position.set(Cylinder_R * Math.cos(SegRadius * 3), 2, Cylinder_R * Math.sin(SegRadius * 3))
+        planeMesh3.rotateY((-45 * 1) * Math.PI / 180)
+        planeMesh3.rotateX((-6) * Math.PI / 180)
+
         wrapper_slide.add(planeMesh)
-
-
-
-
+        wrapper_slide.add(planeMesh1)
+        wrapper_slide.add(planeMesh2)
+        wrapper_slide.add(planeMesh3)
+        wrapper_slide.position.y = (-1);
+        wrapper_slide.rotateY(SegRadius * 2);
+        SlideCamera.lookAt(wrapper_slide)
 
 
         //Create 3D zone, which wrap new object
         const ObjectCamera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const wrapper = new Object3D;
         const loader = new GLTFLoader2()
-        loader.load('./podium3.glb', (gltf) => {
+        loader.load('', (gltf) => {
             const loadedObject = gltf.scene;
             loadedObject.scale.set(0.8, 0.8, 0.8);
             loadedObject.rotateY((180 + 35) * (Math.PI / 180))
@@ -134,6 +163,8 @@ const WebgiViewer = forwardRef((props, ref) => {
         const target_obj1 = camera.target;
         const position_obj2 = ObjectCamera.position;
         const target_obj2 = wrapper.position;
+        const position_obj3 = SlideCamera.position;
+        const target_obj3 = wrapper_slide.position;
 
         setCameraRef(camera)
         setPositionRef(ObjectCamera)
@@ -182,6 +213,7 @@ const WebgiViewer = forwardRef((props, ref) => {
             if (direction) angle = delta * (Math.PI / 180);
             else angle = (-delta) * (Math.PI / 180);
             firstModel.rotateY(angle);
+            wrapper_slide.rotateY(-angle / 3.2);
         }
 
         viewer.addEventListener("preFrame", () => {
@@ -190,7 +222,7 @@ const WebgiViewer = forwardRef((props, ref) => {
                 needUpdate = false;
             }
         })
-        memorizedScrollAnimation(position_obj1, target_obj1, position_obj2, target_obj2, isMobile, onUpdate)
+        memorizedScrollAnimation(position_obj1, target_obj1, position_obj2, target_obj2, position_obj3, target_obj3, isMobile, onUpdate)
     }, []);
 
     useEffect(() => {
