@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 
-export const scrollAnimation = (position_obj1, target_obj1, position_obj2, target_obj2, position_obj3, target_obj3, isMobile, onUpdate) => {
+export const scrollAnimation = (position_obj1, target_obj1, position_obj2, target_obj2, position_obj3, target_obj3, isMobile, onUpdate, onUpdateSlideCam) => {
 
 
     var lastScrollTop = 0;
@@ -37,109 +37,88 @@ export const scrollAnimation = (position_obj1, target_obj1, position_obj2, targe
 
     const tl = gsap.timeline();
 
-    tl.to('.section--one--container', {
-        xPercent: '-150', opacity: 0,
-        scrollTrigger: {
-            trigger: '.second',
-            start: 'top bottom',
-            end: 'top 80%',
-            scrub: 1,
-            immediateRender: false
-        },
-    })
-    tl.from('.section--two--container', {
-        xPercent: '100', opacity: 0,
-        scrollTrigger: {
-            trigger: '.second',
-            start: 'top bottom',
-            end: '150% bottom',
-            scrub: 1,
-            immediateRender: false
-        },
-    })
-    tl.from('.section--third--container', {
-        xPercent: '-100', opacity: 0,
-        scrollTrigger: {
-            trigger: '.third',
-            start: 'top bottom',
-            end: '150% bottom',
-            scrub: 1,
-            immediateRender: false
-        },
-    })
+    // tl.to('.section--one--container', {
+    //     xPercent: '-150', opacity: 0,
+    //     scrollTrigger: {
+    //         trigger: '.second',
+    //         start: 'top bottom',
+    //         end: 'top 80%',
+    //         scrub: 1,
+    //         immediateRender: false
+    //     },
+    // })
+    // tl.from('.section--two--container', {
+    //     xPercent: '100', opacity: 0,
+    //     scrollTrigger: {
+    //         trigger: '.second',
+    //         start: 'top bottom',
+    //         end: '150% bottom',
+    //         scrub: 1,
+    //         immediateRender: false
+    //     },
+    // })
+    // tl.from('.section--third--container', {
+    //     xPercent: '-100', opacity: 0,
+    //     scrollTrigger: {
+    //         trigger: '.third',
+    //         start: 'top bottom',
+    //         end: '150% bottom',
+    //         scrub: 1,
+    //         immediateRender: false
+    //     },
+    // })
     tl.to(position_obj2, {
         x: 0,
         y: 0,
         z: 0,
         scrollTrigger: {
-            trigger: '.second',
+            trigger: '.first',
             start: 'top bottom',
-            end: 'top top ',
+            end: 'bottom',
             scrub: true,
             immediateRender: true
         },
     })
         .to(target_obj2, {
             x: 0,
-            y: 1.5,
+            y: 0,
             z: 0,
             scrollTrigger: {
-                trigger: '.second',
-                start: 'top bottom',
-                end: 'top top',
-                scrub: true,
-                immediateRender: false
-            },
-        })
-
-    tl.to(position_obj3, {
-        x: 0,
-        y: 0,
-        z: 0,
-        scrollTrigger: {
-            trigger: '.second',
-            start: 'top bottom',
-            end: 'bottom ',
-            scrub: true,
-            immediateRender: true
-        },
-    })
-        .to(target_obj3, {
-            x: 0,
-            y: 1.5,
-            z: 0,
-            scrollTrigger: {
-                trigger: '.second',
+                trigger: '.first',
                 start: 'top bottom',
                 end: 'bottom',
                 scrub: true,
                 immediateRender: false
             },
         })
-    tl.to(position_obj3, {
+
+    tl.to(target_obj3, {
         x: 0,
-        y: 0,
+        y: 5,
         z: 0,
         scrollTrigger: {
-            trigger: '.third',
+            trigger: '.first',
             start: 'top bottom',
-            end: 'top top ',
+            end: 'bottom ',
             scrub: true,
-            immediateRender: true
+            immediateRender: false,
         },
+
     })
-        .to(target_obj3, {
-            x: 0,
-            y: 1.5,
-            z: 0,
-            scrollTrigger: {
-                trigger: '.third',
-                start: 'top bottom',
-                end: 'top top',
-                scrub: true,
-                immediateRender: false
-            },
-        })
+    //     .to(position_obj3, {
+    //         x: 0,
+    //         y: 25,
+    //         z: 0,
+    //         duration: 0.1,
+    //         scrollTrigger: {
+    //             trigger: '.App',
+    //             start: 'top bottom',
+    //             end: 'bottom',
+    //             scrub: true,
+    //             immediateRender: false
+    //         },
+    //         // onUpdateSlideCam
+    //     })
 
     //     .to(position, {
     //         x: -3.4,

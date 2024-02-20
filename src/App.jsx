@@ -7,6 +7,10 @@ import FirstSection from "./components/FirstSection";
 import SecondSection from "./components/SecondSection";
 import ThirdSection from "./components/ThirdSection";
 import ReactLenis, { useLenis } from "@studio-freight/react-lenis";
+import vid1 from './assets/videos/box 3.mp4'
+import vid2 from './assets/videos/box 4.mp4'
+import vid3 from './assets/videos/box 5.mp4'
+import vid4 from './assets/videos/box 6.mp4'
 
 function App() {
   const WebgiViewerRef = useRef();
@@ -33,12 +37,16 @@ function App() {
 
   return (
     <ReactLenis root additionalProp={lenis_props}>
-      <div className="App" >        
+      <div className="App" >
+        <video id='vid1' autoPlay src={vid1}></video>
+        {/* <video src={vid2}></video>
+        <video src={vid3}></video>
+        <video src={vid4}></video> */}
         <Nav />
-        <div ref={contentRef} id="content">
+        <div ref={contentRef} id="content" >
           <FirstSection />
-          <SecondSection />
-          <ThirdSection/>
+          {/* <SecondSection />
+          <ThirdSection/> */}
         </div>
         <WebgiViewer ref={WebgiViewerRef} contentRef={contentRef} />
       </div>

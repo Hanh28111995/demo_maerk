@@ -52,7 +52,7 @@ body {
 .section {
   display: flex;
   width: 100vw;
-  height: 100vh;
+  height: 5000px;
   align-items: center;
 }
 
@@ -68,6 +68,10 @@ body {
   width: 50%;
   margin: 0 0 30px -10px;
 }
+
+/* video { */
+  /* visibility: hidden; */
+/* } */
 
 .button--hero {
   background: #F2CE6E;
@@ -247,6 +251,10 @@ footer {
   .container,
   nav {
     overflow-x: hidden;
+  }
+
+  .first {
+    height: 100%;
   }
 
   .first h1 {
